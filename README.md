@@ -1,2 +1,3 @@
 # goph419-f2024-lecex
-this is for goph 419 class examples. 
+
+This folder is for GOPH 419 class examples :)
