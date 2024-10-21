@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/goph419-f2024-lecex.iml" filepath="$PROJECT_DIR$/.idea/goph419-f2024-lecex.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../goph419-f2024-lab00-stSP/src/my_python_package/.idea/my_python_package.iml" filepath="$PROJECT_DIR$/../goph419-f2024-lab00-stSP/src/my_python_package/.idea/my_python_package.iml" />
     </modules>
   </component>
 </project>
