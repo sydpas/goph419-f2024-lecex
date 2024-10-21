@@ -35,5 +35,10 @@ A = np.array([2.0, 8.5, 3])
     For A:
     - A = np.array([2.0, 8.5, 3]) will print array([2. , 8.5, 3. ])
     - A.shape will print (3,)
+    - array-like: anything that can be converted to an array
+        - can contain strings but all data must be a string (uniform)
+        - if there are non-uniform types, they must be convertable
     - to change a value:
         - A[1] = -6 will print np.float(-6.0)
+    - to grow array:
+        - for C = np.array([ 4., 13.,  6.]), C_bigger = np.hstack([C, 5.0]) will print array([ 4., 13.,  6.,  5.])
