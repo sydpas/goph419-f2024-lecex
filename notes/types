@@ -1,0 +1,39 @@
+T = (1, 2.0, "twelve")
+- this is a tuple.
+- its values have an index (T[1] = 2.0)
+- the values cannot change because it is immutable.
+- can have mixed contents.
+
+D = {"one" : 1, "two" : 2, "three" : 85}
+- this is a dictionary.
+- its values have a key (key : value)
+- the values can change because it is mutable.
+- can have mixed contents.
+
+    For D:
+    - D["two"] will print 2
+    - to change a value:
+        - let D2 = {"one" : 1, "two" : 2, "three" : 85}
+        - D2["three"] = 3 will print 3
+
+L = [[1,2,3],[4.0,5.0],["six"]]
+- this is a list embedded with sub-lists.
+- its values are accessed by integer indices (L[0][0] = 2)
+- the values can change because it is mutable.
+- can have mixed contents.
+
+    For L:
+    - len(L[2][0]) will print 3 because there are three characters in 'six'
+
+A = np.array([2.0, 8.5, 3])
+- this is a numpy array.
+- its values are accessed by angle brackets (A[2] = np.float64(3.0))
+- the values can change because it is mutable.
+- cannot have mixed contents (uniform data).
+- cannot have a jagged array (nxn - uniform shape)
+
+    For A:
+    - A = np.array([2.0, 8.5, 3]) will print array([2. , 8.5, 3. ])
+    - A.shape will print (3,)
+    - to change a value:
+        - A[1] = -6 will print np.float(-6.0)
