@@ -54,7 +54,7 @@ def forward_subst(a, b):
     x = np.zeros_like(b)
     for k, a_row in enumerate(a):  # looping over every row in a one.
         x[k, :] = (b[k, :] - a_row[:k] @ x[:k, :])  # x[k, :] kth row, all the columns, a_row[:k] up to k
-    print(x)
-
-if __name__ == "__main__":
-    forward_subst(2, 3)
+    # tidy up output shape.
+    if b_one_d:
+        x = x.flatten()  # takes multi dimension array and makes it nice (M, 1) --> (M, )
+    return x
