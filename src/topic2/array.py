@@ -1,5 +1,6 @@
 import numpy as np
 
+from src.topic2.linalg import forward_subst
 
 def main():
     A = np.array([[8e5, 0, 0, 0],
