@@ -1,4 +1,4 @@
-from src.topic1labexercises.functions import exp
+from src.topic1.functions import exp
 
 def main():
     x=0
