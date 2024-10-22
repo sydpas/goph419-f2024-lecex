@@ -1,0 +1,6 @@
+for loops are meant to loop over finite sets of objects.
+- lists, arrays, sequences, etc.
+- that is why range(M) is not the best to use.
+    - range(M): range is 0,1,2...M-2,M-1
+- enumerate will return a tuple.
+    - ex. for k, a_row in enumerate(a), it will return (k, value) **
