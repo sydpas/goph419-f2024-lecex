@@ -1,5 +1,5 @@
-from src.topic1classexercises.binaryintegers import BE_binary_int32
-from src.topic1classexercises.binaryintegers import LE_binary_int32
+from src.topic1.binaryintegers import BE_binary_int32
+from src.topic1.binaryintegers import LE_binary_int32
 
 
 def main():
