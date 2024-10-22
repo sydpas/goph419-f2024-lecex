@@ -3,7 +3,8 @@
 
 ## General overview. 
 
-This is for my lecture and lab examples. 
+This is for my lecture and lab examples. The source code is in the src folder, the examples are in the examples folder, 
+and any notes are in the notes folder.
 
 ## How to clone the repository.
 
