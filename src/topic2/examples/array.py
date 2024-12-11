@@ -3,7 +3,8 @@ import numpy as np
 from src.topic2.linalg import (
     forward_subst,
     backward_subst,
-    gauss_solve
+    gauss_solve,
+    lu_factor
 )
 
 def main():
@@ -39,7 +40,10 @@ def main():
 
     # full rank non tri system
     A = np.array(
-        [[2.0, -1.0, 0.0, 0.0], [-1.0, 2.0, -1.0, 0.0], [0.0, -2.0, 3.0, -1.0], [0.0, 0.0, -1.0, 1.0]]
+        [[2.0, -1.0, 0.0, 0.0],
+         [-3.0, 2.0, -1.0, 0.0],
+         [0.0, -7.0, 3.0, -1.0],
+         [0.0, 0.0, -1.0, 1.0]]
     )
     b = np.array([[1.0, 2.0, 3.0, 4.0], [2.0, 4.0, 6.0, 8.0]]).T  # T is transpose matrix
     print("Solving Ax = b with Gaussian elimination...")
@@ -51,6 +55,24 @@ def main():
 
     gauss_e = gauss_solve(A, b)
     print(f"The gauss_solve algorithm gives: {gauss_e}")
+
+    # full rank non tri system
+    A = np.array(
+        [[2.0, -1.0, 0.0, 0.0],
+         [-3.0, 2.0, -1.0, 0.0],
+         [0.0, -7.0, 3.0, -1.0],
+         [0.0, 0.0, -1.0, 1.0]]
+    )
+    b = np.array([[1.0, 2.0, 3.0, 4.0], [2.0, 4.0, 6.0, 8.0]]).T  # T is transpose matrix
+    print("Solving Ax = b with LU decomposition...")
+    print(f"A: {A}")
+    print(f"b: {b}")
+
+    x_np = np.linalg.solve(A, b)
+    print(f"The solution is: {x_np}")
+
+    lu_d = lu_factor(A, b)
+    print(f"The LU_factor algorithm gives: {lu_d}")
 
 
 if __name__ == "__main__":
