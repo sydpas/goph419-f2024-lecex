@@ -166,19 +166,117 @@ def gauss_solve(a, b):
 
     # form the augmented matrix
     aug = np.hstack([a, b])
+    p_row = np.arange(M)  # for tracking row pivots
+    q_col = np.arange(M)  # for tracking column pivots
 
     # forward elimination algorithm!
-    for k, _ in enumerate(aug):  # _ needs to be there for syntax
+    for k, _ in enumerate(aug):  # _ needs to be there for syntax, enumerate loops through a list
+        kp1 = (k + 1)
+        # row pivoting, looking at rows at and below the pivot, where is the abs of vector equal to max?
+        k_row, k_col = np.argwhere(
+            np.abs(aug[k:, k:M]) == np.max(np.abs(aug[k:, k:M]))
+        )[0, :]
+        if k_row:
+            swap = k + k_row
+            aug[(k, swap), :] = aug[(swap, k), :]
+            p_row[k], p_row[swap] = p_row[swap], p_row[k]
+        if k_col:
+            swap = k + k_col
+            aug[:, (k, swap)] = aug[:, (swap, k)]
+            q_col[k], q_col[swap] = q_col[swap], q_col[k]
         # calculate elimination coefficients below the pivot
-        aug[(k+1):, k] /= aug[k, k]  # r30/r00, (k+1): is one after the pivot:the end
+        aug[kp1:, k] /= aug[k, k]  # r30/r00, kp1: is one after the pivot:the end
         # subtract correction to eliminate below the pivot
-        for j in range(k+1, M):
-            aug[j, (k+1):] -= aug[j, k] * aug[k, (k+1):]  # aug[j, k] is elimination cof * corresponding column pivots
+        aug[kp1:, kp1:] -= aug[kp1:, k:kp1] @ aug[k:kp1, kp1:]
     # now we have upper triangle form, so now we need to use backwards subst.
     x = backward_subst(aug[:, :M], aug[: , M:])
     # tidy up output shape.
+    x = x[q_col, :]  # put output in correct order, after column pivots
     if b_one_d:
         x = x.flatten()  # takes multi dimension array and makes it nice (M, 1) --> (M, )
     return x
 
+def lu_factor(a, overwrite_a=False, full_output=False):
+    """Factor a non-singular square matrix a
+    into p, q, l, and u matrices such that p*a*q = l*u.
+    Uses the Gaussian elimination algorithm with complete pivoting.
+
+    Parameters
+    ----------
+    a : array_like, shape=(M, M)
+        The coefficient matrix, must be full rank, det(a) != 0.
+    overwrite_a : bool, default=False
+        Flag for whether to overwrite a with the lu matrix.
+    full_output : bool, default=False
+        Flag for returning full l, u, p, and q arrays.
+
+    Returns
+    -------
+    lu : numpy.ndarray, shape=(M, M) or tuple[numpy.array]
+        The l and u matrices in compact storage,
+        with l in the lower triangle (below main diagonal)
+        and u in in the upper triangle (at and above main diagonal).
+    pq : numpy.ndarray, shape=(2, M) or tuple[numpy.array]
+        The p and q matrices in compact storage,
+        with the first row containing row pivot vector p
+        and the second row containing column pivot vector q.
+
+    Notes
+    -----
+    Assume that matrix a has full rank.
+    To separate the l and u matrices,
+    create an identity matrix and copy the values below
+    the main diagonal in lu to create l,
+    and create a matrix of zeros and copy the values at
+    and above the main diagonal in lu to create u.
+    To create the p and q matrices,
+    create an identity matrix and rearrange rows
+    in the order given by pq[0, :] to create p
+    and create an identity matrix and rearrange columns
+    in the order given by pq[1, :] to create q.
+    If full_output is set,
+    the above steps will be done for you,
+    and lu and pq will be tuples containing the full arrays.
+    """
+    # make a copy or rename the input array
+    lu = a if overwrite_a.any() else np.array(a, dtype="float64")
+    # check for valid input
+    shape = lu.shape
+    M = shape[0]
+    if len(shape) != 2:
+        raise ValueError(f"a has dimension {len(shape)}, should be 2.")
+    if M != shape[1]:
+        raise ValueError(f"a has shape {shape}, should be square.")
+    # initialize pivot array
+    pq = np.vstack([np.arange(M), np.arange(M)])
+    # forward elimination algorithm
+    for k, _ in enumerate(lu):
+        kp1 = k + 1
+        # perform row and column pivoting
+        row, col = np.argwhere(np.abs(lu[k:, k:]) == np.max(np.abs(lu[k:, k:])))[0, :]
+        if row:
+            swap = k + row
+            lu[(k, swap), :] = lu[(swap, k), :]
+            pq[0, k], pq[0, swap] = pq[0, swap], pq[0, k]
+        if col:
+            swap = k + col
+            lu[:, (k, swap)] = lu[:, (swap, k)]
+            pq[1, k], pq[1, swap] = pq[1, swap], pq[1, k]
+        # eliminate below the pivot
+        lu[kp1:, k] /= lu[k, k]
+        lu[kp1:, kp1:] -= lu[kp1:, k:kp1] @ lu[k:kp1, kp1:]
+    # tidy up output
+    if full_output:
+        i, j = np.meshgrid(np.arange(M), np.arange(M), indexing="ij")
+        l_mat = np.eye(M, dtype="float64")
+        l_mat[i > j] = lu[i > j]
+        u_mat = np.zeros_like(lu)
+        u_mat[i <= j] = lu[i <= j]
+        lu = (l_mat, u_mat)
+        p_mat = np.zeros((M, M), dtype="int")
+        q_mat = np.zeros((M, M), dtype="int")
+        p_mat[pq[0:1, :].T == j] = 1
+        q_mat[pq[1:2, :] == i] = 1
+        pq = (p_mat, q_mat)
+    return lu, pq
 
