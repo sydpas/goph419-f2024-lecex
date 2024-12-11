@@ -3,7 +3,7 @@ from src.midterm2.question3 import gauss_iter_solve
 from src.midterm2.question3 import RHS
 from src.midterm2.question1 import coef_matrix
 
-co2_data = np.loadtxt(r"C:\Users\sydne\git\goph419\goph419-f2024-lecex\data\data", dtype=float)
+co2_data = np.loadtxt(r"/data/data", dtype=float)
 xd, yd = co2_data[51:62, 0], co2_data[51:62, 1]
 
 
