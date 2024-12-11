@@ -1,0 +1,4 @@
+b) What are the requirements for the iterative Gauss-Seidel and Jacobi iteration techniques to converge?
+- diagonal dominance guarantees the convergence of the Gauss-Seidel and Jacobi methods.
+- the coefficient matrix should be symmetric.
+- a good initial guess will allow for quicker convergence. 
